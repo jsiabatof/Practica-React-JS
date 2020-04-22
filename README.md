@@ -53,7 +53,7 @@ class Stateful extends Component {
 
   render() {
     return (
-      <h1>{this.state.hello}h1>
+      <h1>{this.state.hello}</h1>
     );
   }
 }
@@ -65,12 +65,12 @@ import React from 'react';
 
 const Stateless = () => {
   return (
-    <h1>¡Hola!h1>
+    <h1>¡Hola!</h1>
   );
 }
 
 // Otra forma de crearlos:
-const Stateless = () => <h1>¡Hola!h1>;
+const Stateless = () => <h1>¡Hola!</h1>;
 
 export default Stateless;
 
@@ -92,7 +92,7 @@ const HolaMundo = () => {
   // Esto es JSX (HTML + JavaScript):
   return (
     <div className={claseCSSHolaMundo}>
-      <h1>{mensajeTextoHTML}h1>
+      <h1>{mensajeTextoHTML}</h1>
 
       {isTrue ? '¡Es verdad! :D' : '¡No es verdad! :('}
     div>
@@ -114,7 +114,7 @@ const Button = props => {
   return (
     <div>
       <button type="button">{props.text}button>
-    div>
+    </div>
   );
 };
 
