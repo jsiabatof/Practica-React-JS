@@ -388,3 +388,187 @@ Podemos configurar las reglas de ESLint en el archivo .eslintrc.
 
 ---------------
 
+Añadiendo imágenes con Webpack
+
+Vamos a usar File Loader para acceder a las imágenes de nuestro proyecto desde el código.
+
+Inicialmente, estos archivos estáticos se encuentran junto al código de desarrollo. Pero al momento de compilar, Webpack guardará las imágenes en una nueva carpeta junto al código para producción y actualizará nuestros componentes (o donde sea que usemos las imágenes) con los nuevos nombres y rutas de los archivos.
+
+Instalación de File Loader:
+
+npm install --save-dev file-loader
+Configuración de File Loader en Webpack (webpack.config.js):
+
+rules: [
+  {
+    test: /\.(png|gif|jpg)$/,
+    use: [
+      {
+        loader: 'file-loader',
+        options: { name: 'assets/[hash].[ext]' },
+      }
+    ],
+  },
+],
+Uso de File Loader con React:
+
+import React from 'react';
+import nombreDeLaImagen from '../assets/static/nombre-del-archivo';
+
+const Component = () => (
+  <img src={nombreDeLaImagen} />
+);
+
+export default Component;
+
+---------------
+
+Imports, Variables y Fuentes de Google en Sass
+
+Así como JavaScript, Sass nos permite almacenar valores en variables que podemos usar en cualquier otra parte de nuestras hojas de estilo.
+
+$theme-font: 'Muli, sans-serif;
+$main-color: #8f57fd;
+
+body {
+  background: $main-color;
+  font-family: $theme-font;
+}
+Podemos guardar nuestras variables en un archivo especial e importarlo desde los archivos de estilo donde queremos usar estas variables.
+
+# Vars.scss
+$theme-font: 'Muli, sans-serif;
+$main-color: #8f57fd;
+
+# App.scss
+@import ""./Vars.scss""
+
+`body {
+  background: $main-color;
+  font-family: $theme-font;
+}
+También podemos importar hojas de estilo externas a nuestra aplicación. Por ejemplo: las fuentes de Google.
+
+@import url(https://fonts.googleapis.com/css?family=Muli&display-swap)
+Recuerda que puedes tomar el Curso de Sass para estudiar esta herramienta a profundidad.
+
+----------------
+
+Creando una Fake API
+
+Vamos a usar JSON Server para crear una Fake API: una API ““falsa”” construida a partir de un archivo JSON que nos permite preparar nuestro código para consumir una API de verdad en el futuro.
+
+Instalación de JSON Server:
+
+sudo npm install json-server -g
+```
+
+Recuerda que en Windows debes correr tu terminal de comandos en modo administrador.
+
+Ejecutar el servidor de JSON Server:
+
+```bash
+json-server archivoParaTuAPI.json
+
+---------------
+
+React Hooks: useEffect y useState
+
+En esta clase el profesor Oscar Barajas nos enseña qué es y cómo implementar React Hooks: una característica de React disponible a partir de la versión 16.8 que nos permite agregar estado y ciclo de vida a nuestros componentes creados como funciones.
+
+React es una librería desarrollada por Facebook que nos ayuda a construir interfaces de usuario interactivas para todo tipo de aplicaciones: páginas web, aplicaciones móviles o de escritorio, experiencias de realidad virtual, entre otras.
+
+--------------
+
+Lectura React Hooks
+
+Los React Hooks son una característica de React que tenemos disponible a partir de la versión 16.8. Nos permiten agregar estado y ciclo de vida a nuestros componentes creados como funciones.
+
+El Hook useState nos devuelve un array con dos elementos: la primera posición es el valor de nuestro estado, la segunda es una función que nos permite actualizar ese valor.
+
+El argumento que enviamos a esta función es el valor por defecto de nuestro estado (initial state).
+
+import React, { useState } from 'react';
+
+const Component = () => {
+  const [name, setName] = useState('Nombre por defecto');
+
+  return <div>{name}div>;
+}
+El Hook useEffect nos permite ejecutar código cuando se monta, desmonta o actualiza nuestro componente.
+
+El primer argumento que le enviamos a useEffect es una función que se ejecutará cuando React monte o actualice el componente. Esta función puede devolver otra función que se ejecutará cuando el componente se desmonte.
+
+El segundo argumento es un array donde podemos especificar qué propiedades deben cambiar para que React vuelva a llamar nuestro código. Si el componente actualiza pero estas props no cambian, la función no se ejecutará.
+
+Por defecto, cuando no enviamos un segundo argumento, React ejecutará la función de useEffect cada vez que el componente o sus componentes padres actualicen. En cambio, si enviamos un array vacío, esta función solo se ejecutará al montar o desmontar el componente.
+
+import React, { useState, useEffect } from 'react';
+
+const Component = () => {
+  const [name, setName] = useState('Nombre por defecto');
+
+  useEffect(() => {
+    document.title = name;
+    return () => {
+      document.title = 'el componente se desmontó';
+    };
+  }, [name]);
+
+  return <div>{name}div>;
+}
+No olvides importar las funciones de los hooks desde la librería de React. También puedes usarlos de esta forma: React.useNombreDelHook.
+
+-----------------
+
+Custom Hooks
+
+React nos permite crear nuestros propios Hooks. Solo debemos seguir algunas convenciones:
+
+Los hooks siempre deben empezar con la palabra use: useAPI, useMovies, useWhatever.
+Si nuestro custom hook nos permite consumir/interactuar con dos elementos (por ejemplo, title y setTitle), nuestro hook debe devolver un array.
+Si nuestro custom hook nos permite consumir/interactuar con tres o más elementos (por ejemplo, name, setName, lastName, setLastName, etc.), nuestro hook debe devolver un objeto.
+Recuerda que puedes aprender más sobre Custom Hooks y las nuevas características de React en el Curso Avanzado de React JS.
+
+---------------
+
+PropTypes
+
+Los PropTypes son una propiedad de nuestros componentes que nos permiten especificar qué tipo de elementos son nuestras props: arrays, strings, números, etc.
+
+Instalación de PropTypes:
+
+npm install --save prop-types
+Uso de PropTypes:
+
+import React from 'react';
+import PropTypes from 'prop-types';
+
+const Component = ({ name, lastName, age, list }) => {
+  // ...
+};
+
+Component.propTypes = {
+  name: PropTypes.string,
+  lastName: PropTypes.string,
+  age: PropTypes.number,
+  list: PropTypes.array,
+};
+
+export default Component;
+Por defecto, enviar todas nuestras props es opcional, pero con los propTypes podemos especificar cuáles props son obligatorias para que nuestro componente funcione correctamente con el atributo isRequired.
+
+Component.propTypes = {
+  name: PropTypes.string.isRequired, // obligatorio
+  lastName: PropTypes.string.isRequired, // obligatorio
+  age: PropTypes.number, // opcional,
+  list: PropTypes.array, // opcional
+};
+
+---------------
+
+Debuggeando React con React DevTools
+
+React DevTools es una herramienta muy parecida al Inspector de Elementos. Nos permite visualizar, analizar e interactuar con nuestros componentes de React desde el navegador.
+
+---------------
