@@ -1,25 +1,28 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Search from '../components/Search';
 import Categories from '../components/Categories';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
-import useInitialState from '../hooks/useInitialState';
 import '../assets/styles/App.scss';
+import Header from '../components/Header';
 
-const API = 'http://localhost:3000/initalState';
-
-const Home = () => {
-  const initialState = useInitialState(API);
-  return initialState.length === 0 ? <h1>Loading...</h1> : (
+const Home = ({ myList, trends, originals }) => {
+  return (
     <>
-      <Search />
+      <Header />
+      <Search isHome />
 
-      {initialState.mylist.length > 0 && (
+      {myList.length > 0 && (
         <Categories title='Mi lista'>
           <Carousel>
-            {initialState.mylist.map((item) => (
-              // eslint-disable-next-line react/jsx-props-no-spreading
-              <CarouselItem key={item.id} {...item} />
+            {myList.map((item) => (
+              <CarouselItem
+                key={item.id}
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...item}
+                isList
+              />
             ))}
           </Carousel>
         </Categories>
@@ -27,7 +30,7 @@ const Home = () => {
 
       <Categories title='Tendencias'>
         <Carousel>
-          {initialState.trends.map((item) => (
+          {trends.map((item) => (
             // eslint-disable-next-line react/jsx-props-no-spreading
             <CarouselItem key={item.id} {...item} />
           ))}
@@ -36,7 +39,7 @@ const Home = () => {
 
       <Categories title='Originales de Platzi'>
         <Carousel>
-          {initialState.originals.map((item) => (
+          {originals.map((item) => (
             // eslint-disable-next-line react/jsx-props-no-spreading
             <CarouselItem key={item.id} {...item} />
           ))}
@@ -47,4 +50,12 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    myList: state.myList,
+    trends: state.trends,
+    originals: state.originals,
+  };
+};
+
+export default connect(mapStateToProps, null)(Home);
